@@ -1,0 +1,36 @@
+:root {
+  --skin-tone: #ffdbac;
+  --hair-color: #6f4e37;
+  --glasses-fixed: #101010;
+  --bg-main: #0b1120;
+  --bg-card: #172137;
+  --bg-nav: ba(11, 17, 32, 0.9);
+  --text-body: #bcccdc;
+  --text-title: #38bdf8;
+  --accent: #38bdf8;
+  --btn-text: #0b1120;
+  --border: #334155;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-body);
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}

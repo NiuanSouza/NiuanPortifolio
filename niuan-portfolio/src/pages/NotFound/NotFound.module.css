@@ -1,0 +1,140 @@
+.container {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.content {
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.errorCode {
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon {
+  font-size: 6rem;
+  animation: glitch 0.5s infinite alternate;
+}
+
+@keyframes glitch {
+  from {
+    transform: skew(2deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    transform: skew(-2deg);
+    filter: hue-rotate(45deg);
+  }
+}
+
+.title {
+  color: var(--text-title);
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid var(--accent);
+  padding-left: 1.5rem;
+  text-align: left;
+  width: 100%;
+}
+
+.description {
+  color: var(--text-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.terminal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 3rem;
+  font-family: "Courier New", monospace;
+  border-left: 4px solid var(--accent);
+}
+
+.line span {
+  color: var(--accent);
+  font-weight: bold;
+}
+.timer {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.alert {
+  color: #ff4444;
+}
+
+/* Grupo de Botões */
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.backBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.backBtn {
+  background: var(--accent);
+  color: var(--btn-text);
+  border: none;
+  text-decoration: none;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: var(--text-title);
+  border: 1px solid var(--border);
+}
+
+.backBtn:hover {
+  transform: translateY(-4px);
+  box-shadow: 6px 6px 0px var(--border);
+}
+
+.cancelBtn:hover {
+  background: var(--border);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .actions {
+    flex-direction: column;
+  }
+  .errorCode {
+    font-size: 5rem;
+  }
+}

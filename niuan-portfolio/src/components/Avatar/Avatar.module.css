@@ -1,0 +1,30 @@
+.container {
+  width: 320px;
+  height: 320px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid var(--accent);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+  background-color: var(--bg-main);
+  margin-left: 0;
+}
+
+.container:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+  }
+}
