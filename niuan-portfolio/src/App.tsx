@@ -1,22 +1,19 @@
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { ProjectProvider } from "./context/ProjectContext";
-import { Navbar } from "./components/layout/Navbar/Navbar.tsx";
+import { Navbar } from "./components/layout/Navbar/Navbar"; // Removido .tsx (padrão)
 import { Outlet } from "react-router-dom";
-import { Footer } from "./components/layout/Footer/Footer.tsx";
-import { FaviconHandler } from "./components/Favicon/FaviconHandler.tsx";
-
-function ThemeWrapper() {
-  const { theme } = useTheme();
-  return <FaviconHandler theme={theme} />;
-}
+import { Footer } from "./components/layout/Footer/Footer";
+import { FaviconHandler } from "./components/Favicon/FaviconHandler";
 
 function App() {
   return (
     <ThemeProvider>
-      <ThemeWrapper />
+      <FaviconHandler />
       <ProjectProvider>
         <Navbar />
-        <Outlet />
+        <main>
+          <Outlet />
+        </main>
         <Footer />
       </ProjectProvider>
     </ThemeProvider>
