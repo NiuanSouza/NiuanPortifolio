@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useMemo } from "react";
-import { FaReact, FaPython, FaDocker } from "react-icons/fa";
+import { FaReact, FaJava } from "react-icons/fa";
 import {
   SiSpringboot,
-  SiTypescript,
   SiPostgresql,
   SiMysql,
   SiNodedotjs,
@@ -20,6 +19,40 @@ export interface Project {
   deployUrl?: string;
 }
 
+const PROJECTS_DATA: Project[] = [
+  {
+    id: 0,
+    order: 1,
+    title: "E-commerce 2.0 Full-Stack",
+    description:
+      "Plataforma de e-commerce com arquitetura MVC, autenticação JWT, carrinho persistente e integração total entre React e Node.js.",
+    image: "/ecommerce_2.0.png",
+    technologies: [
+      { icon: FaReact, name: "React" },
+      { icon: SiNodedotjs, name: "Node.js" },
+      { icon: SiExpress, name: "Express" },
+      { icon: SiPostgresql, name: "PostgreSQL" },
+    ],
+    githubUrl: "https://github.com/NiuanSouza/Ecommer-2.0",
+    deployUrl: "https://ecommer-2-0-1.onrender.com/",
+  },
+  {
+    id: 1,
+    order: 2,
+    title: "Fazenda Urbana (Refatoração)",
+    description:
+      "Projeto de gestão de produção agrícola em processo de migração de sistema desktop para uma arquitetura escalável com Java Spring Boot.",
+    image: "/fazenda_urbana.png",
+    technologies: [
+      { icon: FaJava, name: "Java 21" },
+      { icon: SiSpringboot, name: "Spring Boot" },
+      { icon: SiMysql, name: "MySQL" },
+      { icon: FaReact, name: "React" },
+    ],
+    githubUrl: "https://github.com/NiuanSouza/fazenda_urbana",
+  },
+];
+
 interface ProjectContextType {
   projects: Project[];
   getTopProjects: (count: number) => Project[];
@@ -32,42 +65,23 @@ export const ProjectProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const projects: Project[] = useMemo(
-    () => [
-      {
-        id: 0,
-        order: 1,
-        title: "E-commerce 2.0 Full-Stack",
-        description:
-          "Plataforma de e-commerce com arquitetura MVC, autenticação JWT, carrinho persistente e integração total entre React e Node.js.",
-        image: "/projects/ecommerce.png",
-        technologies: [
-          { icon: FaReact, name: "React" },
-          { icon: SiNodedotjs, name: "Node.js" },
-          { icon: SiExpress, name: "Express" },
-          { icon: SiPostgresql, name: "PostgreSQL" },
-        ],
-        githubUrl: "https://github.com/NiuanSouza/Ecommer-2.0",
-        deployUrl: "https://ecommer-2-0-1.onrender.com/",
-      },
-    ],
-    [],
-  );
+  const projects = useMemo(() => PROJECTS_DATA, []);
 
   const getTopProjects = (count: number) => {
     return [...projects].sort((a, b) => a.order - b.order).slice(0, count);
   };
 
+  const value = useMemo(() => ({ projects, getTopProjects }), [projects]);
+
   return (
-    <ProjectContext.Provider value={{ projects, getTopProjects }}>
-      {children}
-    </ProjectContext.Provider>
+    <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>
   );
 };
 
 export const useProjects = () => {
   const context = useContext(ProjectContext);
-  if (!context)
+  if (!context) {
     throw new Error("useProjects must be used within ProjectProvider");
+  }
   return context;
 };
