@@ -22,7 +22,6 @@ import {
   FaCss3Alt,
   FaJsSquare,
 } from "react-icons/fa";
-// Usando Tabler Icons para o que falta no Font Awesome
 import {
   TbBrandTypescript,
   TbBrandCSharp,

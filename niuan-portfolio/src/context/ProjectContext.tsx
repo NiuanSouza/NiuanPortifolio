@@ -5,6 +5,8 @@ import {
   SiTypescript,
   SiPostgresql,
   SiMysql,
+  SiNodedotjs,
+  SiExpress,
 } from "react-icons/si";
 
 export interface Project {
@@ -33,50 +35,20 @@ export const ProjectProvider = ({
   const projects: Project[] = useMemo(
     () => [
       {
-        id: 1,
+        id: 0,
         order: 1,
-        title: "SIVA - Gestão de Frotas",
+        title: "E-commerce 2.0 Full-Stack",
         description:
-          "Sistema integrado para controle de viaturas e atendimentos em tempo real.",
-        image:
-          "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=800",
+          "Plataforma de e-commerce com arquitetura MVC, autenticação JWT, carrinho persistente e integração total entre React e Node.js.",
+        image: "/projects/ecommerce.png",
         technologies: [
-          { icon: SiSpringboot, name: "Spring" },
           { icon: FaReact, name: "React" },
-          { icon: FaDocker, name: "Docker" },
-          { icon: SiMysql, name: "MySQL" },
-        ],
-        githubUrl: "https://github.com/niuan/siva",
-        deployUrl: "https://siva-demo.com",
-      },
-      {
-        id: 2,
-        order: 2,
-        title: "IA Data Intelligence",
-        description:
-          "Automação de planilhas complexas utilizando Python para processamento de dados legados.",
-        image:
-          "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800",
-        technologies: [
-          { icon: FaPython, name: "Python" },
+          { icon: SiNodedotjs, name: "Node.js" },
+          { icon: SiExpress, name: "Express" },
           { icon: SiPostgresql, name: "PostgreSQL" },
         ],
-        githubUrl: "https://github.com/niuan/python-excel",
-      },
-      {
-        id: 3,
-        order: 3,
-        title: "Deep Ocean Portfolio",
-        description:
-          "Site pessoal com temas dinâmicos e avatar em pixel art customizado.",
-        image:
-          "https://images.unsplash.com/photo-1550439062-609e1531270e?auto=format&fit=crop&q=80&w=800",
-        technologies: [
-          { icon: FaReact, name: "React" },
-          { icon: SiTypescript, name: "TypeScript" },
-        ],
-        githubUrl: "https://github.com/niuan/portfolio",
-        deployUrl: "https://niuan.dev",
+        githubUrl: "https://github.com/NiuanSouza/Ecommer-2.0",
+        deployUrl: "https://ecommer-2-0-1.onrender.com/",
       },
     ],
     [],
