@@ -25,7 +25,6 @@ import {
 import {
   TbBrandTypescript,
   TbBrandCSharp,
-  TbBrandFlutter,
   TbSql,
   TbBrandOffice,
 } from "react-icons/tb";
@@ -46,22 +45,21 @@ export const Home = () => {
     front: [
       { name: "React", icon: FaReact, color: "#61DAFB" },
       { name: "TypeScript", icon: TbBrandTypescript, color: "#3178C6" },
-      { name: "Flutter", icon: TbBrandFlutter, color: "#02569B" },
       { name: "JavaScript", icon: FaJsSquare, color: "#F7DF1E" },
       { name: "HTML5", icon: FaHtml5, color: "#E34F26" },
       { name: "CSS3", icon: FaCss3Alt, color: "#1572B6" },
     ],
     back: [
-      { name: "C# / .NET", icon: TbBrandCSharp, color: "#239120" },
-      { name: "Java", icon: FaJava, color: "#007396" },
-      { name: "Python", icon: FaPython, color: "#3776AB" },
+      { name: "Spring Boot / Java", icon: FaJava, color: "#6DB33F" },
+      { name: "ASP.NET / C#", icon: TbBrandCSharp, color: "#239120" },
       { name: "Node.js", icon: FaNodeJs, color: "#339933" },
+      { name: "Python", icon: FaPython, color: "#3776AB" },
       { name: "Docker", icon: FaDocker, color: "#2496ED" },
     ],
     data: [
-      { name: "SQL Server", icon: TbSql, color: "#CC2927" },
+      { name: "PostgreSQL", icon: HiDatabase, color: "#336791" },
       { name: "MySQL", icon: HiDatabase, color: "#4479A1" },
-      { name: "PostgreSQL", icon: HiDatabase, color: "#4169E1" },
+      { name: "SQL Server", icon: TbSql, color: "#CC2927" },
       { name: "Power BI", icon: TbBrandOffice, color: "#F2C811" },
     ],
   };
@@ -84,10 +82,10 @@ export const Home = () => {
             Niuan <span className={styles.accentText}>Souza</span>
           </h1>
           <p className={styles.description}>
-            Desenvolvedor Full Stack graduado em ADS e focado em{" "}
-            <strong>Banco de Dados</strong>. Especialista em soluções escaláveis
-            com sólida base em <strong>C#</strong>, <strong>Java</strong> e{" "}
-            <strong>Dados</strong>.
+            Desenvolvedor Full Stack apaixonado por tecnologia e resolução de
+            problemas. Foco na construção de sistemas robustos, escaláveis e de
+            alta performance, integrando arquiteturas sólidas de backend com
+            experiências front-end fluidas.
           </p>
           <div className={styles.buttonGroup}>
             <button
@@ -141,14 +139,9 @@ export const Home = () => {
         <h2 className={styles.sectionTitle}>Especialidades Técnicas</h2>
         <div className={styles.stackGrid}>
           {[
-            { title: "Interface & Mobile", data: stack.front, Icon: HiCode },
-            { title: "Backend & Core", data: stack.back, Icon: HiServer },
-            {
-              title: "Dados & BI",
-              data: stack.data,
-              Icon: HiDatabase,
-              full: true,
-            },
+            { title: "Frontend", data: stack.front, Icon: HiCode },
+            { title: "Backend", data: stack.back, Icon: HiServer },
+            { title: "Dados", data: stack.data, Icon: HiDatabase, full: true },
           ].map((col) => (
             <div
               key={col.title}
