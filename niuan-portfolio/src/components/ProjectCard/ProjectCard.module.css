@@ -78,7 +78,8 @@
 }
 
 .githubBtn,
-.deployBtn {
+.deployBtn,
+.detailsBtn {
   flex: 1;
   display: flex;
   align-items: center;
@@ -99,8 +100,16 @@
 }
 
 .deployBtn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.detailsBtn {
   background: var(--accent);
   color: var(--btn-text);
+  border: 1px solid var(--accent);
+  cursor: pointer;
 }
 
 /* Ajustes para toque (Android/Mobile) */
@@ -109,7 +118,8 @@
     transform: none;
   }
   .githubBtn,
-  .deployBtn {
+  .deployBtn,
+  .detailsBtn {
     padding: 0.8rem;
   } /* Área de clique maior */
 }

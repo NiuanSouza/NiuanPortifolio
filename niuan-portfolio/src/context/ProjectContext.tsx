@@ -1,11 +1,21 @@
-import React, { createContext, useContext, useMemo } from "react";
-import { FaReact, FaJava } from "react-icons/fa";
+import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
+import { FaReact, FaJava, FaGithub, FaPython, FaHtml5, FaCss3Alt, FaJs } from "react-icons/fa";
 import {
   SiSpringboot,
   SiPostgresql,
   SiMysql,
   SiNodedotjs,
   SiExpress,
+  SiTypescript,
+  SiCsharp,
+  SiCplusplus,
+  SiPhp,
+  SiRuby,
+  SiGo,
+  SiRust,
+  SiSwift,
+  SiKotlin,
+  SiDart
 } from "react-icons/si";
 
 export interface Project {
@@ -17,6 +27,13 @@ export interface Project {
   technologies: { icon: React.ElementType; name: string }[];
   githubUrl?: string;
   deployUrl?: string;
+  advancedConfig?: {
+    imagesCount: number;
+    technologies?: {
+      frontend?: string[];
+      backend?: string[];
+    };
+  };
 }
 
 const PROJECTS_DATA: Project[] = [
@@ -60,12 +77,95 @@ interface ProjectContextType {
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
+const getLanguageIcon = (language: string | null) => {
+  switch (language?.toLowerCase()) {
+    case "typescript": return { icon: SiTypescript, name: "TypeScript" };
+    case "javascript": return { icon: FaJs, name: "JavaScript" };
+    case "html": return { icon: FaHtml5, name: "HTML" };
+    case "css": return { icon: FaCss3Alt, name: "CSS" };
+    case "python": return { icon: FaPython, name: "Python" };
+    case "java": return { icon: FaJava, name: "Java" };
+    case "c#": return { icon: SiCsharp, name: "C#" };
+    case "c++": return { icon: SiCplusplus, name: "C++" };
+    case "php": return { icon: SiPhp, name: "PHP" };
+    case "ruby": return { icon: SiRuby, name: "Ruby" };
+    case "go": return { icon: SiGo, name: "Go" };
+    case "rust": return { icon: SiRust, name: "Rust" };
+    case "swift": return { icon: SiSwift, name: "Swift" };
+    case "kotlin": return { icon: SiKotlin, name: "Kotlin" };
+    case "dart": return { icon: SiDart, name: "Dart" };
+    default: return { icon: FaGithub, name: language || "Code" };
+  }
+};
+
 export const ProjectProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const projects = useMemo(() => PROJECTS_DATA, []);
+  const [projects, setProjects] = useState<Project[]>(PROJECTS_DATA);
+
+  useEffect(() => {
+    // 1. Wake up Render services
+    PROJECTS_DATA.forEach(project => {
+      if (project.deployUrl?.includes("onrender.com")) {
+        fetch(project.deployUrl, { mode: "no-cors" }).catch(() => {});
+      }
+    });
+
+    // 2. Fetch GitHub projects
+    const fetchGitHubProjects = async () => {
+      try {
+        const response = await fetch("https://api.github.com/users/NiuanSouza/repos?sort=updated&per_page=10");
+        if (!response.ok) return;
+        
+        const repos = await response.json();
+        
+        const newProjects: Project[] = await Promise.all(repos.map(async (repo: any, index: number) => {
+          let advancedConfig = undefined;
+          let deployUrl = repo.homepage || undefined;
+          
+          try {
+            const configRes = await fetch(`https://raw.githubusercontent.com/NiuanSouza/${repo.name}/main/deploy_config/config.json`);
+            if (configRes.ok) {
+              const config = await configRes.json();
+              advancedConfig = {
+                imagesCount: config.imagesCount || 1,
+                technologies: config.technologies
+              };
+              if (config.liveUrl) {
+                deployUrl = config.liveUrl;
+              }
+            }
+          } catch (e) {
+            // Se falhar, segue sem configuração avançada
+          }
+
+          return {
+            id: 1000 + repo.id,
+            order: 10 + index,
+            title: repo.name.replace(/-/g, " "),
+            description: repo.description || "Repositório do GitHub",
+            image: `https://placehold.co/600x400/1e1e1e/ffffff?text=${encodeURIComponent(repo.name)}`,
+            technologies: [getLanguageIcon(repo.language)],
+            githubUrl: repo.html_url,
+            deployUrl,
+            advancedConfig
+          };
+        }));
+
+        setProjects(prevProjects => {
+          const existingUrls = prevProjects.map(p => p.githubUrl).filter(Boolean);
+          const filteredNew = newProjects.filter(p => !existingUrls.includes(p.githubUrl));
+          return [...prevProjects, ...filteredNew];
+        });
+      } catch (error) {
+        console.error("Erro ao buscar projetos do GitHub:", error);
+      }
+    };
+
+    fetchGitHubProjects();
+  }, []);
 
   const getTopProjects = (count: number) => {
     return [...projects].sort((a, b) => a.order - b.order).slice(0, count);
