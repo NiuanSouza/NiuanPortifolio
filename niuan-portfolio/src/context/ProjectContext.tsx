@@ -1,11 +1,6 @@
 import React, { createContext, useContext, useMemo, useState, useEffect } from "react";
-import { FaReact, FaJava, FaGithub, FaPython, FaHtml5, FaCss3Alt, FaJs } from "react-icons/fa";
+import { FaJava, FaGithub, FaPython, FaHtml5, FaCss3Alt, FaJs } from "react-icons/fa";
 import {
-  SiSpringboot,
-  SiPostgresql,
-  SiMysql,
-  SiNodedotjs,
-  SiExpress,
   SiTypescript,
   SiSharp,
   SiCplusplus,
@@ -36,39 +31,7 @@ export interface Project {
   };
 }
 
-const PROJECTS_DATA: Project[] = [
-  {
-    id: 0,
-    order: 1,
-    title: "E-commerce 2.0 Full-Stack",
-    description:
-      "Plataforma de e-commerce com arquitetura MVC, autenticação JWT, carrinho persistente e integração total entre React e Node.js.",
-    image: "/ecommerce_2.0.png",
-    technologies: [
-      { icon: FaReact, name: "React" },
-      { icon: SiNodedotjs, name: "Node.js" },
-      { icon: SiExpress, name: "Express" },
-      { icon: SiPostgresql, name: "PostgreSQL" },
-    ],
-    githubUrl: "https://github.com/NiuanSouza/Ecommer-2.0",
-    deployUrl: "https://ecommer-2-0-1.onrender.com/",
-  },
-  {
-    id: 1,
-    order: 2,
-    title: "Fazenda Urbana (Refatoração)",
-    description:
-      "Projeto de gestão de produção agrícola em processo de migração de sistema desktop para uma arquitetura escalável com Java Spring Boot.",
-    image: "/fazenda_urbana.png",
-    technologies: [
-      { icon: FaJava, name: "Java 21" },
-      { icon: SiSpringboot, name: "Spring Boot" },
-      { icon: SiMysql, name: "MySQL" },
-      { icon: FaReact, name: "React" },
-    ],
-    githubUrl: "https://github.com/NiuanSouza/fazenda_urbana",
-  },
-];
+
 
 interface ProjectContextType {
   projects: Project[];
@@ -103,15 +66,9 @@ export const ProjectProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [projects, setProjects] = useState<Project[]>(PROJECTS_DATA);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    // 1. Wake up Render services
-    PROJECTS_DATA.forEach(project => {
-      if (project.deployUrl?.includes("onrender.com")) {
-        fetch(project.deployUrl, { mode: "no-cors" }).catch(() => {});
-      }
-    });
 
     // 2. Fetch GitHub projects
     const fetchGitHubProjects = async () => {
@@ -124,6 +81,7 @@ export const ProjectProvider = ({
         const newProjects: Project[] = await Promise.all(repos.map(async (repo: any, index: number) => {
           let advancedConfig = undefined;
           let deployUrl = repo.homepage || undefined;
+          let description = repo.description || "Repositório do GitHub";
           
           try {
             const configRes = await fetch(`https://raw.githubusercontent.com/NiuanSouza/${repo.name}/main/deploy_config/config.json`);
@@ -136,16 +94,24 @@ export const ProjectProvider = ({
               if (config.liveUrl) {
                 deployUrl = config.liveUrl;
               }
+              if (config.description) {
+                description = config.description;
+              }
             }
           } catch (e) {
             // Se falhar, segue sem configuração avançada
           }
 
+          // Se tiver um deployUrl apontando para o onrender.com, tenta fazer o wake-up
+          if (deployUrl?.includes("onrender.com")) {
+            fetch(deployUrl, { mode: "no-cors" }).catch(() => {});
+          }
+
           return {
-            id: 1000 + repo.id,
-            order: 10 + index,
+            id: repo.id,
+            order: index,
             title: repo.name.replace(/-/g, " "),
-            description: repo.description || "Repositório do GitHub",
+            description,
             image: `https://placehold.co/600x400/1e1e1e/ffffff?text=${encodeURIComponent(repo.name)}`,
             technologies: [getLanguageIcon(repo.language)],
             githubUrl: repo.html_url,
@@ -154,11 +120,7 @@ export const ProjectProvider = ({
           };
         }));
 
-        setProjects(prevProjects => {
-          const existingUrls = prevProjects.map(p => p.githubUrl).filter(Boolean);
-          const filteredNew = newProjects.filter(p => !existingUrls.includes(p.githubUrl));
-          return [...prevProjects, ...filteredNew];
-        });
+        setProjects(newProjects);
       } catch (error) {
         console.error("Erro ao buscar projetos do GitHub:", error);
       }

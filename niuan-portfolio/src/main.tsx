@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import { Home } from "./pages/Home/Home";
 import { Projects } from "./pages/Projects/Projects";
+import { ProjectDetails } from "./pages/ProjectDetails/ProjectDetails";
 import { NotFound } from "./pages/NotFound/NotFound.tsx";
 import "./index.css";
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "projects",
         element: <Projects />,
+      },
+      {
+        path: "projetos/:id",
+        element: <ProjectDetails />,
       },
       {
         path: "*",

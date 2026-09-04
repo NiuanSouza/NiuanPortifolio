@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import { HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
-import { Project } from "../../context/ProjectContext";
+import { HiChevronLeft, HiChevronRight, HiArrowLeft } from "react-icons/hi";
+import { useParams, Link } from "react-router-dom";
+import { useProjects } from "../../context/ProjectContext";
 import styles from "./ProjectDetails.module.css";
 
-interface ProjectDetailsProps {
-  project: Project;
-  onClose: () => void;
-}
+export const ProjectDetails = () => {
+  const { id } = useParams<{ id: string }>();
+  const { projects } = useProjects();
+  const project = projects.find(p => p.id === Number(id));
 
-export const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onClose }) => {
   const [activeTab, setActiveTab] = useState<"root" | "frontend" | "backend">("root");
   const [readmeContent, setReadmeContent] = useState<string>("Carregando...");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // If the project doesn't have advanced details (config), default to 0
-  const imagesCount = project.advancedConfig?.imagesCount || 1;
-  const githubRepoName = project.githubUrl ? project.githubUrl.split("/").slice(-2).join("/") : "";
+  const imagesCount = project?.advancedConfig?.imagesCount || 1;
+  const githubRepoName = project?.githubUrl ? project.githubUrl.split("/").slice(-2).join("/") : "";
   const rawBaseUrl = githubRepoName ? `https://raw.githubusercontent.com/${githubRepoName}/main` : "";
 
   useEffect(() => {
+    if (!project) return;
+    
     const fetchReadme = async () => {
       if (!rawBaseUrl) {
         setReadmeContent("Este projeto não possui um repositório vinculado para carregar o README.");
@@ -54,7 +55,11 @@ Certifique-se de que o seu repositório tenha a seguinte estrutura:
     };
 
     fetchReadme();
-  }, [activeTab, rawBaseUrl]);
+  }, [activeTab, rawBaseUrl, project]);
+
+  if (!project) {
+    return <div style={{ padding: "4rem", textAlign: "center", color: "white" }}>Projeto não encontrado ou carregando...</div>;
+  }
 
   const handleNextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % imagesCount);
@@ -68,16 +73,16 @@ Certifique-se de que o seu repositório tenha a seguinte estrutura:
     if (project.advancedConfig && rawBaseUrl) {
       return `${rawBaseUrl}/deploy_config/picture/${currentImageIndex}.png`;
     }
-    return project.image; // Fallback to static image
+    return project.image;
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose}>
-          <HiX size={24} />
-        </button>
+    <div className={styles.pageContainer}>
+      <Link to="/projects" className={styles.backBtn}>
+        <HiArrowLeft size={20} /> Voltar aos Projetos
+      </Link>
 
+      <div className={styles.modal}>
         <div className={styles.carousel}>
           {imagesCount > 1 && (
             <button className={`${styles.carouselBtn} ${styles.prevBtn}`} onClick={handlePrevImage}>
@@ -89,7 +94,7 @@ Certifique-se de que o seu repositório tenha a seguinte estrutura:
             src={getImageUrl()} 
             alt={project.title} 
             className={styles.carouselImg} 
-            onError={(e) => (e.currentTarget.src = project.image)} // Fallback if GitHub image fails
+            onError={(e) => (e.currentTarget.src = project.image)}
           />
           
           {imagesCount > 1 && (
