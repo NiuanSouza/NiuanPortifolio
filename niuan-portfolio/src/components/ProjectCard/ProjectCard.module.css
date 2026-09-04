@@ -73,8 +73,15 @@
 
 .footer {
   display: flex;
+  flex-direction: column;
   gap: 0.8rem;
   margin-top: auto;
+}
+
+.topLinks {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
 }
 
 .githubBtn,

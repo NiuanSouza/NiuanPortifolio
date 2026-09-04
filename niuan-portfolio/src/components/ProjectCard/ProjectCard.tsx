@@ -31,26 +31,28 @@ export const ProjectCard: React.FC<Project> = (project) => {
         </div>
 
         <div className={styles.footer}>
-          {githubUrl && (
-            <a
-              href={githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.githubBtn}
-            >
-              <FaGithub size={18} /> Code
-            </a>
-          )}
-          {deployUrl && (
-            <a
-              href={deployUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.deployBtn}
-            >
-              <HiExternalLink size={18} /> Live
-            </a>
-          )}
+          <div className={styles.topLinks}>
+            {githubUrl && (
+              <a
+                href={githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.githubBtn}
+              >
+                <FaGithub size={18} /> Code
+              </a>
+            )}
+            {deployUrl && (
+              <a
+                href={deployUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.deployBtn}
+              >
+                <HiExternalLink size={18} /> Live
+              </a>
+            )}
+          </div>
           <Link 
             to={`/projetos/${id}`}
             className={styles.detailsBtn}
