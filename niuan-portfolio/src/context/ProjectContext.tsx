@@ -7,7 +7,7 @@ import {
   SiNodedotjs,
   SiExpress,
   SiTypescript,
-  SiCsharp,
+  SiSharp,
   SiCplusplus,
   SiPhp,
   SiRuby,
@@ -85,7 +85,7 @@ const getLanguageIcon = (language: string | null) => {
     case "css": return { icon: FaCss3Alt, name: "CSS" };
     case "python": return { icon: FaPython, name: "Python" };
     case "java": return { icon: FaJava, name: "Java" };
-    case "c#": return { icon: SiCsharp, name: "C#" };
+    case "c#": return { icon: SiSharp, name: "C#" };
     case "c++": return { icon: SiCplusplus, name: "C++" };
     case "php": return { icon: SiPhp, name: "PHP" };
     case "ruby": return { icon: SiRuby, name: "Ruby" };
