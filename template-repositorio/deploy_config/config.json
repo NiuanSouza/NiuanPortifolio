@@ -1,0 +1,8 @@
+{
+  "liveUrl": "https://seu-front-end-live.com",
+  "imagesCount": 3,
+  "technologies": {
+    "frontend": ["React", "TypeScript", "TailwindCSS"],
+    "backend": ["Node.js", "Express", "PostgreSQL"]
+  }
+}
