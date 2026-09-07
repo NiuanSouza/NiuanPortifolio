@@ -78,10 +78,11 @@ export const ProjectProvider = ({
         
         const repos = await response.json();
         
-        const newProjects: Project[] = await Promise.all(repos.map(async (repo: any, index: number) => {
+        const rawProjects = await Promise.all(repos.map(async (repo: any, index: number) => {
           let advancedConfig = undefined;
           let deployUrl = repo.homepage || undefined;
           let description = repo.description || "Repositório do GitHub";
+          let order = 9999 + index; // Fallback se não tiver orderId
           
           try {
             const configRes = await fetch(`https://raw.githubusercontent.com/NiuanSouza/${repo.name}/main/deploy_config/config.json`);
@@ -97,9 +98,14 @@ export const ProjectProvider = ({
               if (config.description) {
                 description = config.description;
               }
+              if (typeof config.orderId === 'number') {
+                order = config.orderId;
+              }
+            } else {
+              return null; // Filtra se não tiver config.json
             }
           } catch (e) {
-            // Se falhar, segue sem configuração avançada
+            return null; // Filtra se der erro de rede
           }
 
           // Se tiver um deployUrl apontando para o onrender.com, tenta fazer o wake-up
@@ -109,7 +115,7 @@ export const ProjectProvider = ({
 
           return {
             id: repo.id,
-            order: index,
+            order,
             title: repo.name.replace(/-/g, " "),
             description,
             image: `https://placehold.co/600x400/1e1e1e/ffffff?text=${encodeURIComponent(repo.name)}`,
@@ -119,6 +125,9 @@ export const ProjectProvider = ({
             advancedConfig
           };
         }));
+
+        const newProjects = rawProjects.filter(p => p !== null) as Project[];
+        newProjects.sort((a, b) => a.order - b.order);
 
         setProjects(newProjects);
       } catch (error) {
