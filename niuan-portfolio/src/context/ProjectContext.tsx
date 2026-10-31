@@ -95,6 +95,17 @@ export const ProjectProvider = ({
               if (config.liveUrl) {
                 deployUrl = config.liveUrl;
               }
+              // Mapeamento para as rotas locais do ecossistema DuckDNS
+              const localRoutes: Record<string, string> = {
+                "Ecommer-2.0": "/ecommerce",
+                "Fazenda_Urbana": "/citygreen",
+                "GeodataHub": "/geodatahub",
+                "PDF-Editor": "/pdf-editor",
+                "SIVA": "/siva",
+              };
+              if (localRoutes[repo.name]) {
+                deployUrl = localRoutes[repo.name];
+              }
               if (config.description) {
                 description = config.description;
               }

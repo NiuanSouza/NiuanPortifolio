@@ -4,7 +4,7 @@ Bem-vindo ao meu portfólio profissional! Este projeto foi desenvolvido para dem
 
 ## 🚀 Acesso ao Projeto
 Você pode visualizar o projeto em funcionamento através do link abaixo:
-[https://niuanportifolio.onrender.com](https://niuanportifolio.onrender.com)
+[https://niuansouza.duckdns.org/](https://niuansouza.duckdns.org/)
 
 ## 🛠 Tecnologias Utilizadas
 - **React**: Biblioteca principal para a interface do usuário.
